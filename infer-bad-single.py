@@ -55,7 +55,7 @@ def extract_feat(wav_path, samplerate=16000, cmn=True):
     if cmn:
         logfbankFeat -= logfbankFeat.mean(axis=0, keepdims=True)
     return logfbankFeat.astype('float32')
-    
+
 
 class SVExtractor():
     def __init__(self, mdl_kwargs, model_path, device):
@@ -76,26 +76,26 @@ class SVExtractor():
             embd = self.model(feat)
         embd = embd.squeeze(0).cpu().numpy()
         return embd
-    
+
 def infer_bad(wav, detector, noise_thres):
     wav_feats = extract_feat(wav)
     logits = softmax(detector(wav_feats))
     hasBird = (logits[1].item() >= noise_thres)
     return hasBird, logits[1]
-    
+
 if __name__ == "__main__":
 
     args = parse_args()
     model_bad_path = args.model_bad
-    
+
     int2label = {0:"0",1:"1"}
-        
+
     print('... loading activity detector ...')
     bad_extractor = SVExtractor(mdl_bad_kwargs, model_bad_path, device=args.device)
     print('... loaded ...')
-        
+
     pred_dict = {}
-    
+
     wav_ = args.data
     hasBird, confidence = infer_bad(wav_, bad_extractor, args.nt, int2label)
 
