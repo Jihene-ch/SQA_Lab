@@ -77,7 +77,7 @@ class SVExtractor():
         embd = embd.squeeze(0).cpu().numpy()
         return embd
     
-def infer_bad(wav, detector, noise_thres, int2label_dict):
+def infer_bad(wav, detector, noise_thres):
     wav_feats = extract_feat(wav)
     logits = softmax(detector(wav_feats))
     hasBird = (logits[1].item() >= noise_thres)
