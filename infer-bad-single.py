@@ -64,7 +64,8 @@ class SVExtractor():
         self.device = device
         self.model = self.model.to(self.device)
 
-    def load_model(self, mdl_kwargs, model_path, device):
+    @staticmethod
+    def load_model(mdl_kwargs, model_path, device):
         model = torch.load(model_path, map_location=device)
         return model
 
